@@ -3,13 +3,27 @@
 """
 Модуль для построения графиков плотности плазмы.
 """
+import os
 from datetime import time
+os.add_dll_directory(r"C:\Program Files\netCDF 4.9.2\bin")
+os.add_dll_directory(r"C:\Program Files\HDF_Group\HDF5\1.14.6\bin")
 
+
+
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Модуль для построения графиков плотности плазмы.
+"""
+
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import gridspec, ticker
 from boutdata import collect
 from constant import Rcell, Lcell, cell_R, cell_r, cell_L, Nx
+from data_loader import load_plasma_data
 
 def plot_density_by_radius(nframes, z_positions, n_factor=1.0):
     """График плотности по радиусу на заданных z."""
@@ -67,8 +81,8 @@ def plot_density_2d(n, nframes, time, minvar, maxvar, figsizex=18.0, figsizey=8.
     f.subplots_adjust(wspace=0.3, left=0.1, bottom=0.15, right=0.875, top=0.9)
     plt.show()
 
-# Закомментированные функции
-def plot_density(n, nframes, minvar, maxvar, figsizex=18.0, figsizey=8.0):
+def plot_density(nframes, minvar, maxvar, figsizex=18.0, figsizey=8.0):
+    n = collect('n', yguards=True)[:, 2:-2, 2:-2, 0]
     nt, nx, ny = n.shape
     nf = len(nframes)
     x = np.linspace(0., Rcell, nx)
@@ -103,7 +117,8 @@ def plot_density(n, nframes, minvar, maxvar, figsizex=18.0, figsizey=8.0):
     f.subplots_adjust(wspace=0.0, left=0.1, bottom=0.1, right=0.875, top=0.95)
     plt.show()
 
-def plot_avg_density(n, minvar, maxvar, figsizex=18.0, figsizey=8.0):
+def plot_avg_density(minvar, maxvar, figsizex=18.0, figsizey=8.0):
+    n = collect('n', yguards=True)[:, 2:-2, 2:-2, 0]
     nt, nx, ny = n.shape
     x = np.linspace(0., 1., nx)
     y = np.linspace(0., 1., ny)
@@ -146,3 +161,14 @@ def plot_density_by_diameter(nframes, z_positions, n_factor=1.0):
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.tight_layout()
     plt.show()
+
+if __name__ == "__main__":
+    try:
+        n, _, _, _, time = load_plasma_data()
+        plot_density_by_radius(50, [7.0, 14.0], n_factor=4.2e16)
+        plot_density_2d(np.log10(n), (12, 25, 50, 200), time, 15, 19.5)
+        plot_density((13, 25, 50, 200), 0, 1.25, 16., 10.)
+        plot_avg_density(16.5, 18.5, 8., 10.)
+        plot_density_by_diameter(50, [7.0, 14.0], n_factor=4.2e16)
+    except Exception as e:
+        print(f"Ошибка при загрузке данных или построении графиков: {e}")

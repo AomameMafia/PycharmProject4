@@ -15,9 +15,9 @@ def current_density(V, n_e, Te_e):
     exponent = np.clip(-e * V / (kB * Te_e * e), -50, 50)
     return e * n_e * v_th * (1 - np.exp(exponent))
 
-def plot_iv_curve():
+def plot_iv_curve(data_dir=None):
     """Строит ВАХ на основе данных."""
-    n, Te, _, _, _ = load_plasma_data()
+    n, Te, _, _, _ = load_plasma_data(data_dir)
     V_probe = np.linspace(-amplitude, amplitude, num_points)
     n = np.mean(n, axis=(1, 2))
     Te = np.mean(Te, axis=(1, 2))
@@ -33,7 +33,6 @@ def plot_iv_curve():
     plt.legend()
     plt.show()
 
-# Закомментированные варианты ВАХ
 def plot_iv_curve_synthetic():
     V_probe = np.linspace(-amplitude, amplitude, num_points)
     n = np.linspace(1e16, 1e17, num_points)

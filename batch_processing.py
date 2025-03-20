@@ -8,7 +8,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 from boutdata import collect
-from constant import Lcell, cell_L, Rcell, cell_R
+from constant import Lcell, cell_L, Rcell, cell_R, BASE_PATH
 
 def plot_density_z_for_directory(data_dir, nframes):
     """График плотности по оси z для одной папки."""
@@ -38,8 +38,7 @@ def plot_density_z_for_directory(data_dir, nframes):
 
 def process_directories():
     """Обрабатывает все папки Test1-Test62."""
-    base_path = r'C:\Users\auezo\Desktop\fromcluster'
-    data_dirs = [os.path.join(base_path, f'Test{i}') for i in range(1, 63)]
+    data_dirs = [os.path.join(BASE_PATH, f'Test{i}') for i in range(1, 63)]
     failed_dirs = []
     for data_dir in data_dirs:
         folder_name = os.path.basename(data_dir)
@@ -55,7 +54,6 @@ def process_directories():
     else:
         print("\nВсе папки обработаны успешно!")
 
-# Закомментированная функция для плотности по радиусу из нескольких папок
 def plot_density_by_radius_multi(data_dir, title, nframes, z_positions, n_factor=1.0):
     os.chdir(data_dir)
     n = collect('n', yguards=True)[:, 2:-2, 2:-2, 0]
@@ -83,8 +81,7 @@ def plot_density_by_radius_multi(data_dir, title, nframes, z_positions, n_factor
     plt.show()
 
 def process_directories_density_by_radius():
-    base_path = r'C:\Users\auezo\Desktop\fromcluster'
-    data_dirs = [os.path.join(base_path, f'Test{i}') for i in range(1, 63)]
+    data_dirs = [os.path.join(BASE_PATH, f'Test{i}') for i in range(1, 63)]
     failed_dirs = []
     for data_dir in data_dirs:
         folder_name = os.path.basename(data_dir)
