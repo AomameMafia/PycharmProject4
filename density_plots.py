@@ -5,7 +5,7 @@
 """
 import os
 from datetime import time
-os.add_dll_directory(r"C:\Program Files\netCDF 4.9.2\bin")
+os.add_dll_directory(r"C:\Program Files\netCDF 4.9.3\bin")
 os.add_dll_directory(r"C:\Program Files\HDF_Group\HDF5\1.14.6\bin")
 
 
