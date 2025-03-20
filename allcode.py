@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jun 14 16:59:43 2024
-
-@author: aegis
-"""
-
 from boutdata import collect
 from boututils import showdata
 import numpy as np

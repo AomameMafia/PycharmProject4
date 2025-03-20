@@ -1,0 +1,6 @@
+numpy
+boutdata
+boututils
+matplotlib
+scipy
+os
