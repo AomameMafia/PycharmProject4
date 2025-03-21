@@ -5,6 +5,8 @@
 """
 
 import os
+os.add_dll_directory(r"C:\Program Files\netCDF 4.9.3\bin")
+os.add_dll_directory(r"C:\Program Files\HDF_Group\HDF5\1.14.6\bin")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import gridspec
@@ -107,36 +109,51 @@ def plot_temperature_cross_section_fixed_z(nframes, z_pos, data_dir=None, num_th
         if data_dir:
             os.chdir(original_dir)
 
-def plot_temperature_sections_from_file(nframes, z_positions, data_dir=None, temp_type='Ti', temp_factor=1.0):
-    if data_dir:
-        original_dir = os.getcwd()
-        os.chdir(data_dir)
+
+
+#
+# def plot_temperature_sections_from_file(nframes, z_positions, data_dir=None, temp_type='Ti', temp_factor=1.0):
+#     if data_dir:
+#         original_dir = os.getcwd()
+#         os.chdir(data_dir)
+#     try:
+#         temp_data = collect(temp_type, yguards=True)[:, 2:-2, 2:-2, 0]
+#         temp_140us = temp_data[nframes] * temp_factor
+#         nx, ny = temp_140us.shape
+#         r = np.linspace(0, Rcell, nx)
+#         z = np.linspace(0, Lcell, ny)
+#         n_plots = len(z_positions)
+#         fig, axes = plt.subplots(1, n_plots, figsize=(5 * n_plots, 6), subplot_kw={'aspect': 'equal'})
+#         if n_plots == 1:
+#             axes = [axes]
+#         for ax, z_pos in zip(axes, z_positions):
+#             z_index = np.argmin(np.abs(z - z_pos))
+#             temp_at_z = temp_140us[:, z_index]
+#             theta = np.linspace(0, 2 * np.pi, nx)
+#             r_grid, theta_grid = np.meshgrid(r, theta)
+#             temp_2d = np.tile(temp_at_z, (nx, 1))
+#             x = r_grid * np.cos(theta_grid)
+#             y = r_grid * np.sin(theta_grid)
+#             cs = ax.contourf(x, y, temp_2d, levels=20, cmap='inferno', extend='both')
+#             ax.set_title(f'z = {z_pos:.1f} см', fontsize=14, fontweight='bold')
+#             ax.set_xlabel('x, см', fontsize=16)
+#             ax.set_ylabel('y, см', fontsize=16)
+#             cbar = fig.colorbar(cs, ax=ax, orientation='vertical', label=f'{temp_type}, эВ')
+#             cbar.ax.tick_params(labelsize=14)
+#         plt.tight_layout()
+#         plt.show()
+#     finally:
+#         if data_dir:
+#             os.chdir(original_dir)
+
+
+
+if __name__ == "__main__":
     try:
-        temp_data = collect(temp_type, yguards=True)[:, 2:-2, 2:-2, 0]
-        temp_140us = temp_data[nframes] * temp_factor
-        nx, ny = temp_140us.shape
-        r = np.linspace(0, Rcell, nx)
-        z = np.linspace(0, Lcell, ny)
-        n_plots = len(z_positions)
-        fig, axes = plt.subplots(1, n_plots, figsize=(5 * n_plots, 6), subplot_kw={'aspect': 'equal'})
-        if n_plots == 1:
-            axes = [axes]
-        for ax, z_pos in zip(axes, z_positions):
-            z_index = np.argmin(np.abs(z - z_pos))
-            temp_at_z = temp_140us[:, z_index]
-            theta = np.linspace(0, 2 * np.pi, nx)
-            r_grid, theta_grid = np.meshgrid(r, theta)
-            temp_2d = np.tile(temp_at_z, (nx, 1))
-            x = r_grid * np.cos(theta_grid)
-            y = r_grid * np.sin(theta_grid)
-            cs = ax.contourf(x, y, temp_2d, levels=20, cmap='inferno', extend='both')
-            ax.set_title(f'z = {z_pos:.1f} см', fontsize=14, fontweight='bold')
-            ax.set_xlabel('x, см', fontsize=16)
-            ax.set_ylabel('y, см', fontsize=16)
-            cbar = fig.colorbar(cs, ax=ax, orientation='vertical', label=f'{temp_type}, эВ')
-            cbar.ax.tick_params(labelsize=14)
-        plt.tight_layout()
-        plt.show()
-    finally:
-        if data_dir:
-            os.chdir(original_dir)
+        # Пример вызова функций с параметрами
+        plot_temperature_by_radius(50, [7.0, 14.0], temp_type='Te', temp_factor=1.0)
+        plot_temperature_section([12, 25, 50], temp_type='Ti', temp_factor=1.0)
+        plot_temperature_cross_section_fixed_z(50, 7.0, temp_type='Te', temp_factor=1.0)
+        # plot_temperature_sections_from_file(50, [7.0, 14.0], temp_type='Ti', temp_factor=1.0)
+    except Exception as e:
+        print(f"Ошибка при построении графиков: {e}")

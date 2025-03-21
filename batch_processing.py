@@ -5,6 +5,8 @@
 """
 
 import os
+os.add_dll_directory(r"C:\Program Files\netCDF 4.9.3\bin")
+os.add_dll_directory(r"C:\Program Files\HDF_Group\HDF5\1.14.6\bin")
 import matplotlib.pyplot as plt
 import numpy as np
 from boutdata import collect
